@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
     return Opacity(
       opacity: appBarAlpha,
       child: Container(
-        height: 80,
+        height: 60,
         decoration: BoxDecoration(color: Colors.white),
         child: Center(
           child: Padding(
