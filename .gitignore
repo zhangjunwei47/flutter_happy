@@ -48,5 +48,8 @@ build-log.xml
 .gradle
 /local.properties
 /build
+build
 /.idea
 /captures
+/android/.gradle
+

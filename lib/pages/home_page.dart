@@ -29,6 +29,49 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Widget getListView() {
+    return ListView(
+      children: <Widget>[
+        Container(
+          height: 250,
+          child: Swiper(
+            itemCount: _imageUrls.length,
+            autoplay: true,
+            itemBuilder: (BuildContext context, int index) {
+              return Image.network(
+                _imageUrls[index],
+                fit: BoxFit.fill,
+              );
+            },
+            pagination: SwiperPagination(),
+          ),
+        ),
+        Container(
+          height: 1000,
+          child: ListTile(
+            title: new Text("哈哈哈"),
+          ),
+        )
+      ],
+    );
+  }
+
+  Opacity getOpacity() {
+    return Opacity(
+      opacity: appBarAlpha,
+      child: Container(
+        height: 80,
+        decoration: BoxDecoration(color: Colors.white),
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.only(top: 20),
+            child: Text('首页'),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,45 +86,10 @@ class _HomePageState extends State<HomePage> {
                     _onScroll(sc.metrics.pixels);
                   }
                 },
-                child: ListView(
-                  children: <Widget>[
-                    Container(
-                      height: 250,
-                      child: Swiper(
-                        itemCount: _imageUrls.length,
-                        autoplay: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Image.network(
-                            _imageUrls[index],
-                            fit: BoxFit.fill,
-                          );
-                        },
-                        pagination: SwiperPagination(),
-                      ),
-                    ),
-                    Container(
-                      height: 1000,
-                      child: ListTile(
-                        title: new Text("哈哈哈"),
-                      ),
-                    )
-                  ],
-                ),
+                child: getListView(),
               ),
             ),
-            Opacity(
-              opacity: appBarAlpha,
-              child: Container(
-                height: 80,
-                decoration: BoxDecoration(color: Colors.white),
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: Text('首页'),
-                  ),
-                ),
-              ),
-            )
+            getOpacity()
           ],
         ));
   }
