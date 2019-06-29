@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_happy/dao/home_dao.dart';
+import 'package:flutter_happy/model/home_model.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 const APPBAR_OFFSET = 100;
@@ -16,6 +20,13 @@ class _HomePageState extends State<HomePage> {
   ];
 
   double appBarAlpha = 0;
+  String resultString = "";
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
 
   _onScroll(offset) {
     double alpha = offset / APPBAR_OFFSET;
@@ -27,6 +38,19 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       appBarAlpha = alpha;
     });
+  }
+
+  loadData() async {
+    try {
+      HomeModel model = await HomeDao.fetch();
+      setState(() {
+        resultString = json.encode(model);
+      });
+    } catch (e) {
+      setState(() {
+        resultString = e.toString();
+      });
+    }
   }
 
   Widget getListView() {
@@ -49,7 +73,7 @@ class _HomePageState extends State<HomePage> {
         Container(
           height: 1000,
           child: ListTile(
-            title: new Text("哈哈哈"),
+            title: new Text(resultString),
           ),
         )
       ],
@@ -76,21 +100,21 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
-          children: <Widget>[
-            MediaQuery.removePadding(
-              context: context,
-              removeTop: true,
-              child: NotificationListener(
-                onNotification: (sc) {
-                  if (sc is ScrollUpdateNotification && sc.depth == 0) {
-                    _onScroll(sc.metrics.pixels);
-                  }
-                },
-                child: getListView(),
-              ),
-            ),
-            getOpacity()
-          ],
-        ));
+      children: <Widget>[
+        MediaQuery.removePadding(
+          context: context,
+          removeTop: true,
+          child: NotificationListener(
+            onNotification: (sc) {
+              if (sc is ScrollUpdateNotification && sc.depth == 0) {
+                _onScroll(sc.metrics.pixels);
+              }
+            },
+            child: getListView(),
+          ),
+        ),
+        getOpacity()
+      ],
+    ));
   }
 }
